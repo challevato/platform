@@ -1,0 +1,5 @@
+
+- name: "Installing Git"
+  package: pkg=git state=installed
+
+
