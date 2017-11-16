@@ -1,0 +1,16 @@
+---
+dependencies:
+  - role: create_user
+    create_user_name: "{{hlprobe_username}}"
+    create_user_system: yes
+    create_user_shell: /usr/sbin/nologin
+    create_user_home: "{{hlprobe_home}}"
+    create_user_ssh_key: yes
+
+  - role: epel_repo
+
+  - role: global_virtualenv
+    global_virtualenv_path: "{{hlprobe_virtualenv}}"
+    global_virtualenv_pypi: "{{hlprobe_pypi_dependencies}}"
+    global_virtualenv_owner: "{{hlprobe_username}}"
+    global_virtualenv2_yum: "{{hlprobe_yum}}"

@@ -6,3 +6,6 @@ db01
 
 [appservers]
 app01
+
+[hlprobes]
+hlprobe01

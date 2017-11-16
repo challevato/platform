@@ -1,0 +1,62 @@
+# HLprobe
+- name: install hlprobe dependencies for Debian
+  apt: name="{{item}}" state=installed
+  when: ansible_os_family == 'Debian'
+  with_items: "{{hlprobe_apt}}"
+
+- name: install hlprobe dependencies for CentOS
+  yum:
+    name: "{{item}}"
+    state: installed
+  when: ansible_os_family == 'RedHat'
+  with_items: "{{hlprobe_yum}}"
+
+- name: clone hlprobe git repo
+  git:
+    repo: "{{hlprobe_git_repo}}"
+    version: live
+    dest: "{{hlprobe_home}}/hlprobe"
+    accept_hostkey: yes
+  become_user: "{{hlprobe_username}}"
+  notify: restart hlprobe
+
+- name: clone hlprobe-binaries git repo
+  git:
+    repo: "{{hlprobe_binaries_git_repo}}"
+    version: live
+    dest: "{{hlprobe_home}}/hlprobe-binaries"
+    accept_hostkey: yes
+  become_user: "{{hlprobe_username}}"
+  notify: restart hlprobe
+
+- name: install hlprobe in virtualenv
+  command: "{{hlprobe_virtualenv}}/bin/python setup.py install"
+  args:
+    chdir: "{{hlprobe_home}}/hlprobe"
+  become_user: "{{hlprobe_username}}"
+
+- name: workaround for executable bit
+  file:
+    path: "{{hlprobe_virtualenv}}/lib/python2.7/site-packages/hlprobe-0.1.0-py2.7.egg/hlprobelib/external/{{item}}"
+    mode: 0755
+  with_items:
+    - detect_msgpack.py
+    - detect_pynetsnmp.py
+
+# TODO Keep going: http://wiki.cygate.se/doku.php?id=teknik:monitorscout:hlprobe#installera_filerna
+
+- name: install hlprobe config file
+  template:
+    src: templates/etc/hlprobe.conf.j2
+    dest: "{{hlprobe_configfile}}"
+    owner: "{{hlprobe_username}}"
+  notify: restart hlprobe
+
+- name: install hlprobe systemd unit
+  template:
+    src: templates/etc/systemd/system/hlprobe.service.j2
+    dest: "/etc/systemd/system/{{hlprobe_service_name}}.service"
+  notify:
+    - systemctl daemon-reload
+    - restart hlprobe
+  when: ansible_os_family == 'RedHat'

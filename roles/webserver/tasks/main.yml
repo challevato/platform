@@ -1,7 +1,7 @@
 - name: "install webserver software"
   package: name={{ item }} 
   with_items:
-  - apache2
+  - httpd
 
 - name: "Enabling proxy module"
   apache2_module: name=proxy_http

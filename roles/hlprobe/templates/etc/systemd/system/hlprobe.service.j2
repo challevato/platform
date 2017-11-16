@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=HLprobe
+ConditionPathExists={{hlprobe_configfile}}
+After=network.target
+
+[Service]
+Type=simple
+User={{hlprobe_username}}
+Group={{hlprobe_username}}
+WorkingDirectory={{hlprobe_home}}
+ExecStart={{hlprobe_virtualenv}}/bin/python {{hlprobe_virtualenv}}/bin/hlprobe -c {{hlprobe_configfile}}
+#EnvironmentFile=/etc/sysconfig/hlprobe
+SyslogIdentifier=hlprobe
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

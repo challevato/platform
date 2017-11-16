@@ -9,3 +9,10 @@
   become: true
   roles: 
   - webserver
+
+
+-	hosts: hlprobes
+	become: true
+	roles:
+	-	hlprobe
+	

@@ -1,0 +1,50 @@
+hlprobe_pypi_dependencies:
+  - requests[security]
+  - twisted 
+  - pyopenssl 
+  - service_identity 
+  - ipaddr
+
+hlprobe_apt:
+  - python-pip
+  - python-all-dev
+  - python-pynetsnmp
+  - python-geoip
+  - libffi-dev
+  - fping
+  - nagios-plugins
+  - nagios-plugins-basic
+  - nagios-plugins-common
+  - nagios-plugins-standard
+
+hlprobe_yum:
+  - gcc
+  - python-virtualenv
+  - python-devel
+  - net-snmp-python
+  - GeoIP
+  - GeoIP-data
+  - GeoIP-update
+  - python-GeoIP
+  - libffi-devel
+  - fping
+  - openssl-devel
+  - nagios-plugins
+  - nagios-plugins-all
+
+hlprobe_service_name: hlprobe
+hlprobe_username: hlprobe
+hlprobe_home: /var/opt/hlprobe
+hlprobe_monitor_binary_paths: "/usr/lib/nagios/plugins:{{hlprobe_home}}/hlprobe-binaries"
+hlprobe_external_job_dir: ''
+hlprobe_debug_logging: 'false'
+hlprobe_debug_logfile: /tmp/hlprobe_debug.log
+hlprobe_binaries_path: "{{hlprobe_home}}/binaries"
+hlprobe_hlprobelib_path: /usr/local/lib/python2.7/dist-packages/
+hlprobe_monitor_id: 47e871d8630211e7aae3001d0970370f
+hlprobe_monitor_api_key: 8ae5715b901a4552abe0b8ac5029051d
+hlprobe_virtualenv: "{{hlprobe_home}}/venv"
+hlprobe_git_repo: gitosis@vc.monitorscout.com:hlprobe.git
+hlprobe_binaries_git_repo: gitosis@vc.monitorscout.com:hlprobe-binaries.git
+hlprobe_configfile: "/etc/{{hlprobe_service_name}}.conf"
+hlprobe_logdir: "{{hlprobe_home}}/logs"
